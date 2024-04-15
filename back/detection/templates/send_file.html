@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Envio de Arquivo</title>
+
+</head>
+<body>
+    <div id="central">
+        <h1>Envie um arquivo</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="picture" required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>
