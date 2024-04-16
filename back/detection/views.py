@@ -4,6 +4,10 @@ from django.http import JsonResponse
 from django.conf import settings
 from datetime import datetime
 import os
+
+from imageai.Detection.Custom import CustomObjectDetection
+
+
 # Create your views here.
 
 
@@ -27,8 +31,26 @@ def detect(request):
                 destination.write(chunk)
 
         # Obtendo a data e hora atual
-        data_hora_envio = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        receiveDate= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(uploaded_file)
 
-        return JsonResponse({'data_hora_envio': data_hora_envio})
+        imageAnalysis = run_detection(save_path)
+
+        return JsonResponse({'receiveDate': receiveDate, 'imageAnalysis': imageAnalysis}, safe=False)
 
     return render(request, 'send_file.html')
+
+def run_detection(image):
+    detector = CustomObjectDetection()
+    detector.setModelTypeAsYOLOv3()
+    detector.setModelPath('detection/models/yolov3_tuta.pt')
+    detector.setJsonPath('detection/json/tuta_yolov3_detection_config.json')
+    detector.loadModel()
+    detections = detector.detectObjectsFromImage(input_image= image, output_image_path="detection/media/analysis/img1-detected.jpg")
+
+    # for detection in detections:
+    #     print(detections)
+    #     print('---------------------------')
+    #     print(detection)
+    return detections
+
