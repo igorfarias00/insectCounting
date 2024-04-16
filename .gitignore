@@ -1,9 +1,6 @@
 back/detection/models/
 back/detection/json/
 back/detection/media/
-back/detection/models
-back/detection/json
-back/detection/media
 
 ## Django #
 *.log
